@@ -1,0 +1,22 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci --cache .npm --prefer-offline
+    build:
+      commands:
+        # Las env vars de la consola de Amplify solo existen en build time.
+        # Las volcamos a .env.production para que Next.js las tenga en RUNTIME
+        # (Server Actions / Server Components corren en Lambda y leen de process.env).
+        - "env | grep -e '^API_URL=' -e '^JWT_SECRET=' >> .env.production"
+        - npm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - .npm/**/*
+      - node_modules/**/*
+      - .next/cache/**/*
