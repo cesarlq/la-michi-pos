@@ -19,7 +19,7 @@ export function InventoryTable({
 
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200">
-      <table className="w-full text-sm">
+      <table className="w-full min-w-[640px] text-sm">
         <thead className="bg-gray-50 text-gray-500">
           <tr>
             <th className="px-4 py-3 text-left font-medium">Producto</th>
