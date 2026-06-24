@@ -10,6 +10,12 @@ export type DailySummary = {
   itemsSold: number
 }
 
+export type SalesTrendPoint = {
+  date: string // YYYY-MM-DD
+  saleCount: number
+  totalRevenue: number
+}
+
 export type TopProduct = {
   productId: string
   productName: string
@@ -37,6 +43,12 @@ function branchQuery(branchId?: string): string {
 export async function getDailySummary(date?: string, branchId?: string): Promise<DailySummary> {
   const dateParam = date ? `date=${date}` : ''
   return apiClient.get<DailySummary>(`/reports/daily?${dateParam}${branchQuery(branchId)}`)
+}
+
+export async function getSalesTrend(days = 7, branchId?: string): Promise<SalesTrendPoint[]> {
+  return apiClient.get<SalesTrendPoint[]>(
+    `/reports/sales-trend?days=${days}${branchQuery(branchId)}`,
+  )
 }
 
 export async function getTopProducts(
