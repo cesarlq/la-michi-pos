@@ -48,6 +48,8 @@ export function SalesTrendChart({ data }: { data: SalesTrendPoint[] }) {
             tick={{ fontSize: 12, fill: '#94a3b8' }}
             tickLine={false}
             axisLine={false}
+            interval="preserveStartEnd"
+            minTickGap={24}
           />
           <YAxis
             tick={{ fontSize: 12, fill: '#94a3b8' }}

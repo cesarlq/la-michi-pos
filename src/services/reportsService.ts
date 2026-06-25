@@ -34,30 +34,44 @@ export type CriticalStock = {
   minStock: number
 }
 
+// Rango de fechas del periodo a consultar (YYYY-MM-DD). Vacío = default del back.
+export type RangeParams = { from?: string; to?: string }
+
 // El back resuelve la sucursal según el rol del JWT (managers ven solo la suya,
 // owners ven todo o filtran con branchId). Aquí solo reenviamos el filtro opcional.
 function branchQuery(branchId?: string): string {
   return branchId ? `&branch_id=${branchId}` : ''
 }
 
-export async function getDailySummary(date?: string, branchId?: string): Promise<DailySummary> {
-  const dateParam = date ? `date=${date}` : ''
-  return apiClient.get<DailySummary>(`/reports/daily?${dateParam}${branchQuery(branchId)}`)
+function rangeQuery({ from, to }: RangeParams): string {
+  return from && to ? `from=${from}&to=${to}` : ''
 }
 
-export async function getSalesTrend(days = 7, branchId?: string): Promise<SalesTrendPoint[]> {
+export async function getSummary(
+  range: RangeParams = {},
+  branchId?: string,
+): Promise<DailySummary> {
+  return apiClient.get<DailySummary>(
+    `/reports/summary?${rangeQuery(range)}${branchQuery(branchId)}`,
+  )
+}
+
+export async function getSalesTrend(
+  range: RangeParams = {},
+  branchId?: string,
+): Promise<SalesTrendPoint[]> {
   return apiClient.get<SalesTrendPoint[]>(
-    `/reports/sales-trend?days=${days}${branchQuery(branchId)}`,
+    `/reports/sales-trend?${rangeQuery(range)}${branchQuery(branchId)}`,
   )
 }
 
 export async function getTopProducts(
-  days = 7,
+  range: RangeParams = {},
   limit = 10,
   branchId?: string,
 ): Promise<TopProduct[]> {
   return apiClient.get<TopProduct[]>(
-    `/reports/top-products?days=${days}&limit=${limit}${branchQuery(branchId)}`,
+    `/reports/top-products?${rangeQuery(range)}&limit=${limit}${branchQuery(branchId)}`,
   )
 }
 

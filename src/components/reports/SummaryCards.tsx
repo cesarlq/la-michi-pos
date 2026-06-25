@@ -1,10 +1,10 @@
 import { formatCurrency } from '@/utils/format'
 import type { DailySummary } from '@/services/reportsService'
 
-// Tarjetas con el resumen de ventas del día. Componente puro.
+// Tarjetas con el resumen de ventas del periodo. Componente puro.
 export function SummaryCards({ summary }: { summary: DailySummary }) {
   const cards = [
-    { label: 'Ventas del día', value: summary.saleCount.toString(), emoji: '🧾' },
+    { label: 'Ventas', value: summary.saleCount.toString(), emoji: '🧾' },
     { label: 'Ingresos', value: formatCurrency(summary.totalRevenue), emoji: '💰' },
     { label: 'Unidades vendidas', value: summary.itemsSold.toString(), emoji: '🍦' },
   ]
